@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace TestTaskWpfChart.Services
+namespace WpfChart.Services
 {
     public class DialogService
     {

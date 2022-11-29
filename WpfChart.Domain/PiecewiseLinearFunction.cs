@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TestTaskWpfChart.Domain
+namespace WpfChart.Domain
 {
     public class PiecewiseLinearFunction
     {

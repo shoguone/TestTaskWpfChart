@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace TestTaskWpfChart.Commands
+namespace WpfChart.Commands
 {
     public class ActionCommand : ICommand
     {

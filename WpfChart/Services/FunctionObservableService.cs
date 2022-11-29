@@ -3,10 +3,10 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using TestTaskWpfChart.Domain;
-using TestTaskWpfChart.Infrastructure;
+using WpfChart.Domain;
+using WpfChart.Model;
 
-namespace TestTaskWpfChart.Services
+namespace WpfChart.Services
 {
     public class FunctionObservableService : INotifyPropertyChanged
     {

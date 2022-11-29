@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using TestTaskWpfChart.Domain;
-using TestTaskWpfChart.Utility;
+using WpfChart.Domain;
+using WpfChart.Utility;
 
-namespace TestTaskWpfChart.Services
+namespace WpfChart.Services
 {
     public class FunctionCsvService
     {

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using TestTaskWpfChart.ViewModels;
+using WpfChart.ViewModels;
 
-namespace TestTaskWpfChart
+namespace WpfChart
 {
     public partial class MainWindow : Window
     {

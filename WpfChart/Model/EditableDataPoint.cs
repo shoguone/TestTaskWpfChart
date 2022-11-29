@@ -1,7 +1,7 @@
 ﻿using OxyPlot;
 using System.ComponentModel;
 
-namespace TestTaskWpfChart.Infrastructure
+namespace WpfChart.Model
 {
     public class EditableDataPoint : IDataPointProvider, INotifyPropertyChanged
     {

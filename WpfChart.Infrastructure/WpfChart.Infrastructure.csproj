@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WpfChart.Domain\WpfChart.Domain.csproj" />
+    <ProjectReference Include="..\WpfChart.Utility\WpfChart.Utility.csproj" />
+  </ItemGroup>
+
+</Project>

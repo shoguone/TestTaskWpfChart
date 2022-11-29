@@ -5,11 +5,11 @@ using System.Windows.Input;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using TestTaskWpfChart.Commands;
-using TestTaskWpfChart.Infrastructure;
-using TestTaskWpfChart.Services;
+using WpfChart.Commands;
+using WpfChart.Model;
+using WpfChart.Services;
 
-namespace TestTaskWpfChart.ViewModels
+namespace WpfChart.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
