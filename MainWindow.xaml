@@ -15,8 +15,20 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
-        <oxy:PlotView Model="{Binding Model}" />
-        <DataGrid ItemsSource="{Binding FunctionObservableService.Points}" Grid.Column="1" MinColumnWidth="50">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical"
+                    Grid.Column="1" Grid.Row="0">
+            <Button Content="Import from csv" Command="{Binding ImportCmd}" />
+            <Button Content="Export to csv" Command="{Binding ExportCmd}" />
+        </StackPanel>
+
+        <oxy:PlotView Model="{Binding Model}" Grid.RowSpan="2" />
+        <DataGrid ItemsSource="{Binding FunctionObservableService.Points}" MinColumnWidth="50"
+                  Grid.Column="1" Grid.Row="1">
         </DataGrid>
     </Grid>
 </Window>

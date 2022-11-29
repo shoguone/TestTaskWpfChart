@@ -1,43 +1,54 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using TestTaskWpfChart.Commands;
 using TestTaskWpfChart.Infrastructure;
 using TestTaskWpfChart.Services;
 
 namespace TestTaskWpfChart.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
         private readonly string csvFilename = "function.csv";
-
-        private bool _isDirty = false;
+        private PlotModel _model;
 
         public MainViewModel()
         {
             var function = FunctionCsvService.LoadFromCsv(csvFilename);
-
-            //var function = new PiecewiseLinearFunction(new List<(double x, double y)>
-            //{
-            //    (0, 4),
-            //    (10, 12),
-            //    (20, 16),
-            //    (30, 25),
-            //    (40, 5),
-            //});
-
             FunctionObservableService = new FunctionObservableService(function, UpdateData);
-            Model = CreatePlotModel(FunctionObservableService.Points);
+            _model = CreatePlotModel(FunctionObservableService.Points);
+            IsDirty = false;
+
+            ImportCmd = new ActionCommand(_ => Import());
+            ExportCmd = new ActionCommand(_ => Export());
         }
 
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public FunctionObservableService FunctionObservableService { get; set; }
 
-        public PlotModel Model { get; private set; }
+        public PlotModel Model
+        {
+            get => _model;
+            private set
+            {
+                _model = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Model)));
+            }
+        }
+
+        private bool IsDirty { get; set; }
+
+        public ICommand ImportCmd { get; private set; }
+        public ICommand ExportCmd { get; private set; }
 
         private void UpdateData()
         {
-            _isDirty = true;
+            IsDirty = true;
             Model?.InvalidatePlot(true);
         }
 
@@ -55,5 +66,37 @@ namespace TestTaskWpfChart.ViewModels
             return tmp;
         }
 
+        private void Import()
+        {
+            var (ok, filename) = DialogService.OpenFileDialog();
+            if (!ok)
+                return;
+
+            if (string.IsNullOrEmpty(filename))
+            {
+                MessageBox.Show("File name was not specified!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var function = FunctionCsvService.LoadFromCsv(filename);
+            FunctionObservableService.ReInit(function);
+            Model = CreatePlotModel(FunctionObservableService.Points);
+            IsDirty = false;
+        }
+
+        private void Export()
+        {
+            var (ok, filename) = DialogService.SaveFileDialog();
+            if (!ok)
+                return;
+
+            if (string.IsNullOrEmpty(filename))
+            {
+                MessageBox.Show("File name was not specified!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            FunctionCsvService.SaveToCsv(FunctionObservableService.Function, filename);
+        }
     }
 }

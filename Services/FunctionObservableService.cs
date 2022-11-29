@@ -8,17 +8,42 @@ using TestTaskWpfChart.Infrastructure;
 
 namespace TestTaskWpfChart.Services
 {
-    public class FunctionObservableService
+    public class FunctionObservableService : INotifyPropertyChanged
     {
-        private event Action OnPointsChanged;
+        private ObservableCollection<EditableDataPoint> _points;
 
         public FunctionObservableService(PiecewiseLinearFunction function, Action onPointsChanged)
         {
-            OnPointsChanged += onPointsChanged;
+            _OnPointsChanged += onPointsChanged;
+            _points = CreateEditablePoints(function);
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private event Action _OnPointsChanged;
+
+        public ObservableCollection<EditableDataPoint> Points
+        {
+            get => _points;
+            private set
+            {
+                _points = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Points)));
+            }
+        }
+
+        public PiecewiseLinearFunction Function => PointsToFunction(Points);
+
+        public void ReInit(PiecewiseLinearFunction function)
+        {
+            ClearPoints();
             Points = CreateEditablePoints(function);
         }
 
-        public ObservableCollection<EditableDataPoint> Points { get; private set; }
+        private static PiecewiseLinearFunction PointsToFunction(ObservableCollection<EditableDataPoint> points)
+        {
+            return new PiecewiseLinearFunction(points.Select(p => (p.X, p.Y)).ToList());
+        }
 
         private ObservableCollection<EditableDataPoint> CreateEditablePoints(PiecewiseLinearFunction function)
         {
@@ -28,21 +53,16 @@ namespace TestTaskWpfChart.Services
             return points;
         }
 
-        private void ClearPoints(ObservableCollection<EditableDataPoint> points)
+        private void ClearPoints()
         {
-            if (points != null)
+            if (Points != null)
             {
-                points.CollectionChanged -= Points_CollectionChanged;
-                foreach (var point in points)
+                Points.CollectionChanged -= Points_CollectionChanged;
+                foreach (var point in Points)
                     point.PropertyChanged -= Point_PropertyChanged;
 
-                points.Clear();
+                Points.Clear();
             }
-        }
-
-        private PiecewiseLinearFunction PointsToFunction(ObservableCollection<EditableDataPoint> points)
-        {
-            return new PiecewiseLinearFunction(points.Select(p => (p.X, p.Y)).ToList());
         }
 
         private void Points_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -62,12 +82,12 @@ namespace TestTaskWpfChart.Services
                 }
             }
 
-            OnPointsChanged?.Invoke();
+            _OnPointsChanged?.Invoke();
         }
 
         private void Point_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            OnPointsChanged?.Invoke();
+            _OnPointsChanged?.Invoke();
         }
     }
 }
