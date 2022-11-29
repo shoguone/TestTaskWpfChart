@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfChart", "WpfChart\WpfChart.csproj", "{1FC9AFE4-B089-4CEA-8872-90518456C2E9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfChart.Tests", "WpfChart.Tests\WpfChart.Tests.csproj", "{64CF0238-10A6-4C6E-B6F6-11942A25F7D7}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfChart.Domain", "WpfChart.Domain\WpfChart.Domain.csproj", "{D5673961-99AA-4E8F-940D-F073524F5764}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfChart.Infrastructure", "WpfChart.Infrastructure\WpfChart.Infrastructure.csproj", "{9BECAB44-07E9-421E-B2E8-B9EA1D24D4C6}"
@@ -21,6 +23,10 @@ Global
 		{1FC9AFE4-B089-4CEA-8872-90518456C2E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FC9AFE4-B089-4CEA-8872-90518456C2E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FC9AFE4-B089-4CEA-8872-90518456C2E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64CF0238-10A6-4C6E-B6F6-11942A25F7D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64CF0238-10A6-4C6E-B6F6-11942A25F7D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64CF0238-10A6-4C6E-B6F6-11942A25F7D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64CF0238-10A6-4C6E-B6F6-11942A25F7D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5673961-99AA-4E8F-940D-F073524F5764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D5673961-99AA-4E8F-940D-F073524F5764}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5673961-99AA-4E8F-940D-F073524F5764}.Release|Any CPU.ActiveCfg = Release|Any CPU
