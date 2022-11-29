@@ -1,68 +1,43 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using TestTaskWpfChart.Domain;
 using TestTaskWpfChart.Infrastructure;
+using TestTaskWpfChart.Services;
 
 namespace TestTaskWpfChart.ViewModels
 {
     public class MainViewModel
     {
+        private readonly string csvFilename = "function.csv";
+
+        private bool _isDirty = false;
+
         public MainViewModel()
         {
-            var function = new PiecewiseLinearFunction(new List<(double x, double y)>
-            {
-                (0, 4),
-                (10, 12),
-                (20, 16),
-                (30, 25),
-                (40, 5),
-            });
+            var function = FunctionCsvService.LoadFromCsv(csvFilename);
 
-            Points = CreateEditablePoints(function);
+            //var function = new PiecewiseLinearFunction(new List<(double x, double y)>
+            //{
+            //    (0, 4),
+            //    (10, 12),
+            //    (20, 16),
+            //    (30, 25),
+            //    (40, 5),
+            //});
 
-            Model = CreatePlotModel(Points);
+            FunctionObservableService = new FunctionObservableService(function, UpdateData);
+            Model = CreatePlotModel(FunctionObservableService.Points);
         }
+
+
+        public FunctionObservableService FunctionObservableService { get; set; }
 
         public PlotModel Model { get; private set; }
 
-        public ObservableCollection<EditableDataPoint> Points { get; set; }
-
-        private ObservableCollection<EditableDataPoint> CreateEditablePoints(PiecewiseLinearFunction function)
+        private void UpdateData()
         {
-            var points = new ObservableCollection<EditableDataPoint>();
-            points.CollectionChanged += Points_CollectionChanged;
-            function.Points.ForEach(p => points.Add(new EditableDataPoint(p.x, p.y)));
-            return points;
-        }
-
-        private void Points_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null)
-            {
-                foreach (EditableDataPoint item in e.NewItems)
-                {
-                    item.PropertyChanged += Point_PropertyChanged;
-                }
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
-            {
-                foreach (EditableDataPoint item in e.OldItems)
-                {
-                    item.PropertyChanged -= Point_PropertyChanged;
-                }
-            }
-
-            Model?.InvalidatePlot(true);
-        }
-
-        private void Point_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
+            _isDirty = true;
             Model?.InvalidatePlot(true);
         }
 

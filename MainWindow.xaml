@@ -16,7 +16,7 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <oxy:PlotView Model="{Binding Model}" />
-        <DataGrid ItemsSource="{Binding Points}" Grid.Column="1" MinColumnWidth="50">
+        <DataGrid ItemsSource="{Binding FunctionObservableService.Points}" Grid.Column="1" MinColumnWidth="50">
         </DataGrid>
     </Grid>
 </Window>
