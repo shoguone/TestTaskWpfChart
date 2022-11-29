@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
+using TestTaskWpfChart.ViewModels;
 
 namespace TestTaskWpfChart
 {
@@ -7,6 +9,15 @@ namespace TestTaskWpfChart
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (DataContext is not MainViewModel vm)
+                return;
+
+            if (vm.TrySaveChanges() == MessageBoxResult.Cancel)
+                e.Cancel = true;
         }
     }
 

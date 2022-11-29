@@ -46,6 +46,27 @@ namespace TestTaskWpfChart.ViewModels
         public ICommand ImportCmd { get; private set; }
         public ICommand ExportCmd { get; private set; }
 
+        public MessageBoxResult TrySaveChanges()
+        {
+            if (!IsDirty)
+                return MessageBoxResult.None;
+
+            var result = MessageBox.Show(
+                "You are about to exit. Do you like to save your changes?",
+                "Save?",
+                MessageBoxButton.YesNoCancel,
+                MessageBoxImage.Question);
+            if (result == MessageBoxResult.Cancel)
+                return result;
+
+            if (result == MessageBoxResult.OK || result == MessageBoxResult.Yes)
+            {
+                Export();
+            }
+
+            return result;
+        }
+
         private void UpdateData()
         {
             IsDirty = true;
