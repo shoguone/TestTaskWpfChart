@@ -33,7 +33,7 @@ namespace WpfChart.Test
                 if (points[i] != function.Points[i] || points[i] != outFunction.Points[i])
                 {
                     fault = true;
-                    continue;
+                    break;
                 }
             }
 

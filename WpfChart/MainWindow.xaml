@@ -26,6 +26,7 @@
                     Grid.Column="1" Grid.Row="0">
             <Button Content="Import from csv" Command="{Binding ImportCmd}" />
             <Button Content="Export to csv" Command="{Binding ExportCmd}" />
+            <Button Content="Invert" Command="{Binding InvertCmd}" />
         </StackPanel>
 
         <oxy:PlotView Model="{Binding Model}" Grid.RowSpan="2" />

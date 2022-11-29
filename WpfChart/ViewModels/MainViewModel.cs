@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -6,6 +7,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using WpfChart.Commands;
+using WpfChart.Domain;
 using WpfChart.Model;
 using WpfChart.Services;
 
@@ -25,6 +27,7 @@ namespace WpfChart.ViewModels
 
             ImportCmd = new ActionCommand(_ => Import());
             ExportCmd = new ActionCommand(_ => Export());
+            InvertCmd = new ActionCommand(_ => Invert());
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -45,6 +48,7 @@ namespace WpfChart.ViewModels
 
         public ICommand ImportCmd { get; private set; }
         public ICommand ExportCmd { get; private set; }
+        public ICommand InvertCmd { get; private set; }
 
         public MessageBoxResult TrySaveChanges()
         {
@@ -100,9 +104,7 @@ namespace WpfChart.ViewModels
             }
 
             var function = FunctionCsvService.LoadFromCsv(filename);
-            FunctionObservableService.ReInit(function);
-            Model = CreatePlotModel(FunctionObservableService.Points);
-            IsDirty = false;
+            SetNewFunction(function);
         }
 
         private void Export()
@@ -118,6 +120,26 @@ namespace WpfChart.ViewModels
             }
 
             FunctionCsvService.SaveToCsv(FunctionObservableService.Function, filename);
+        }
+
+        private void Invert()
+        {
+            try
+            {
+                var inverseFunction = FunctionObservableService.Function.GetInverseFunction();
+                SetNewFunction(inverseFunction);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Sorry", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void SetNewFunction(PiecewiseLinearFunction function)
+        {
+            FunctionObservableService.ReInit(function);
+            Model = CreatePlotModel(FunctionObservableService.Points);
+            IsDirty = false;
         }
     }
 }
