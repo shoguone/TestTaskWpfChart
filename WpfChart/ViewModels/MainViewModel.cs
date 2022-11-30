@@ -71,24 +71,37 @@ namespace WpfChart.ViewModels
             return result;
         }
 
-        private void UpdateData()
+        public void AdjustPlotMouseBehaviour()
         {
-            IsDirty = true;
-            Model?.InvalidatePlot(true);
+            if (Model == null || Model.PlotView == null)
+                return;
+
+            var plotView = Model.PlotView;
+            plotView.ActualController.BindMouseDown(
+                OxyMouseButton.Left,
+                OxyModifierKeys.Shift,
+                new DelegatePlotCommand<OxyMouseDownEventArgs>((view, controller, args) =>
+                    controller.AddMouseManipulator(view, new DragDropTrackerManipulator(view), args)));
         }
 
         private static PlotModel CreatePlotModel(IEnumerable<EditableDataPoint> points)
         {
-            var tmp = new PlotModel();
+            var plotModel = new PlotModel();
 
-            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
-            tmp.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
 
             var series = new LineSeries { Title = "Chart", MarkerType = MarkerType.Square };
             series.ItemsSource = points;
 
-            tmp.Series.Add(series);
-            return tmp;
+            plotModel.Series.Add(series);
+            return plotModel;
+        }
+
+        private void UpdateData()
+        {
+            IsDirty = true;
+            Model?.InvalidatePlot(true);
         }
 
         private void Import()
